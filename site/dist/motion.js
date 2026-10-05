@@ -1,5 +1,5 @@
 export function brandStory() {
- return `<section id="brand-story" class="brand-story" aria-label="인사이트 브랜드 이야기"><div class="brand-stage"><span class="eyebrow brand-stage-label">NINE PERSPECTIVES. ONE INSIGHT.</span><div class="brand-logo-wrap"><div class="brand-halo" aria-hidden="true"></div><img class="brand-stage-logo" src="/assets/logo-3d.png" alt="아홉 가지 시선이 만나는 3D 클레이 인사이트 로고" width="600" height="600"></div><div class="brand-story-content"><span class="association-label">애니어그램 인사이트 · 애니어그램 협의회</span><h2>서로 다른 아홉 시선,<br>하나의 새로운 인사이트.</h2><p>작은 발견이 나를 이해하는 마음으로,<br>그리고 서로를 연결하는 변화로 이어집니다.</p><a href="#about" class="button">우리의 이야기 만나기</a></div><div class="brand-scroll-cue" aria-hidden="true"><span>SCROLL TO DISCOVER</span><div class="brand-progress"><i></i></div></div></div></section>`;
+ return `<section id="brand-story" class="brand-story" aria-label="인사이트 브랜드 이야기"><div class="brand-stage"><span class="eyebrow brand-stage-label">NINE PERSPECTIVES. ONE INSIGHT.</span><div class="brand-logo-wrap"><div class="brand-halo" aria-hidden="true"></div><img class="brand-stage-logo" src="/assets/logo-enneagram-3d.png" alt="아홉 점과 삼각형, 연결선으로 이루어진 3D 클레이 인사이트 로고" width="600" height="600"></div><div class="brand-story-content"><span class="association-label">애니어그램 인사이트 · 애니어그램 협의회</span><h2>서로 다른 아홉 시선,<br>하나의 새로운 인사이트.</h2><p>작은 발견이 나를 이해하는 마음으로,<br>그리고 서로를 연결하는 변화로 이어집니다.</p><a href="#about" class="button">우리의 이야기 만나기</a></div><div class="brand-scroll-cue" aria-hidden="true"><span>SCROLL TO DISCOVER</span><div class="brand-progress"><i></i></div></div></div></section>`;
 }
 
 export function runMotion() {
@@ -7,6 +7,8 @@ export function runMotion() {
  const {gsap,ScrollTrigger}=window;
  gsap.registerPlugin(ScrollTrigger);
  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+ const report=document.querySelector('#result-card');
+ if(report)gsap.from(report,{autoAlpha:0,y:34,scale:.96,duration:.95,delay:.08,ease:'power3.out'});
  // Establish pin spacing before measuring the sections that follow it.
  const story=document.querySelector('.brand-story');
  if(story){

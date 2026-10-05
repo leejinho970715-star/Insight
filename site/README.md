@@ -43,6 +43,10 @@ ABOUT의 자기 발견·공감·함께 성장 아이콘과 교육·강연·메�
 
 ## GitHub Pages 배포
 
+브랜드 로고는 원 위의 아홉 점과 3–6–9 삼각형, 1–4–2–8–5–7 연결을 담은 3D 클레이 상징입니다. `dist/assets/logo-enneagram-3d.png`를 헤더·푸터·브랜드 스크롤 섹션·도서 콘셉트·문의·결과 리포트에 사용하고, 파비콘과 터치 아이콘에도 동일한 상징을 적용했습니다. built-in image_gen 프롬프트는 `symbol-logo-prompt.txt`에 저장했습니다. 구조 참고: https://www.enneagraminstitute.com/how-the-enneagram-system-works/
+
+유효한 결과 화면으로 진입하면 `dist/celebration.js`에서 약 4초간 폭죽과 컨페티를 재생합니다. 대표 유형·윙 선택 변경에는 반복하지 않으며, 페이지 전환·탭 숨김 시 정리됩니다. 움직임 줄이기 설정에서는 재생하지 않습니다. 효과 레이어는 결과 리포트 외부에 있어 PNG·PDF에 포함되지 않습니다. ABOUT 카드의 흰색 배경 장식 텍스트는 제거했습니다.
+
 https://leejinho970715-star.github.io/Insight/
 
 루트 저장소의 `main` 푸시 시 GitHub Actions에서 `node build-pages.mjs`, `node verify.mjs`를 실행하고 `site/dist`를 배포합니다. HTML 리소스와 CSS 폰트 경로는 상대 경로이며 앱 라우팅은 앱 모듈의 위치에서 기본 경로를 계산하므로 `/Insight/`와 로컬 `/`에서 모두 동작합니다. 보조 이름은 ‘애니어그램 협의회’입니다.
