@@ -8,28 +8,37 @@ export function bindTypeCarousel(){
  clearTypeCarousel();
  const section=document.querySelector('.type-section');if(!section)return;
  const track=section.querySelector('.type-track'),cards=[...track.children];
+ // Matching cards on both sides let the last-to-first transition travel one step.
+ // Only the central nine cards participate in the accessible document.
+ const copies=[];
+ const copy=card=>{const el=card.cloneNode(true);el.dataset.loopClone='true';el.setAttribute('aria-hidden','true');el.setAttribute('inert','');copies.push(el);return el;};
+ track.prepend(...cards.map(copy));track.append(...cards.map(copy));
+ const loopCards=[...track.children],count=cards.length;
  const prev=section.querySelector('[data-type-prev]'),next=section.querySelector('[data-type-next]'),play=section.querySelector('[data-type-play]');
  const range=section.querySelector('.type-progress input'),fill=section.querySelector('.type-progress-fill'),status=section.querySelector('.type-playback');
  const reduced=matchMedia('(prefers-reduced-motion: reduce)'),events=new AbortController();
- let index=0,frame=0,timer=0,interactionTimer=0,visible=false,hovered=false,focused=false,touching=false,userPaused=reduced.matches;
+ let index=0,frame=0,timer=0,interactionTimer=0,settleTimer=0,visible=false,hovered=false,focused=false,touching=false,userPaused=reduced.matches;
  let wheelSum=0,lastWheel=0,wheelLock=0;
  const listen=(el,event,fn,options={})=>el.addEventListener(event,fn,{...options,signal:events.signal});
  const labelPlayback=()=>{play.textContent=userPaused?'▶':'Ⅱ';play.setAttribute('aria-label',userPaused?'슬라이드 자동재생 시작':'슬라이드 자동재생 일시정지');status.textContent=userPaused?'일시정지':'자동재생';};
  const stop=()=>{clearTimeout(timer);timer=0;};
- const schedule=()=>{stop();if(!track.isConnected||!visible||document.hidden||userPaused||hovered||focused||touching||interactionTimer)return;timer=setTimeout(()=>{timer=0;go((index+1)%cards.length,index===cards.length-1);schedule();},1000);};
- const go=(i,instant=false)=>{const target=Math.max(0,Math.min(cards.length-1,i));track.scrollTo({left:cards[target].offsetLeft-cards[0].offsetLeft,behavior:instant||reduced.matches?'instant':'smooth'});};
+ const schedule=()=>{stop();if(!track.isConnected||!visible||document.hidden||userPaused||hovered||focused||touching||interactionTimer)return;timer=setTimeout(()=>{timer=0;go(index+1);schedule();},1000);};
+ const leftOf=card=>card.offsetLeft-loopCards[0].offsetLeft;
+ const nearest=()=>loopCards.reduce((best,card,i)=>Math.abs(leftOf(card)-track.scrollLeft)<Math.abs(leftOf(loopCards[best])-track.scrollLeft)?i:best,0);
+ const logical=i=>((i-count)%count+count)%count;
+ const go=(i,instant=false)=>{const target=Math.max(0,Math.min(loopCards.length-1,i+count));track.scrollTo({left:leftOf(loopCards[target]),behavior:instant||reduced.matches?'instant':'smooth'});};
+ const normalize=()=>{settleTimer=0;if(!track.isConnected||touching)return;const physical=nearest();if(physical>=count&&physical<count*2)return;const central=logical(physical)+count;track.scrollTo({left:track.scrollLeft+leftOf(loopCards[central])-leftOf(loopCards[physical]),behavior:'instant'});};
  const interact=()=>{stop();clearTimeout(interactionTimer);interactionTimer=setTimeout(()=>{interactionTimer=0;schedule();},1400);};
  const update=()=>{
   frame=0;if(!track.isConnected)return;
-  index=cards.reduce((best,card,i)=>Math.abs(card.offsetLeft-cards[0].offsetLeft-track.scrollLeft)<Math.abs(cards[best].offsetLeft-cards[0].offsetLeft-track.scrollLeft)?i:best,0);
-  prev.disabled=index===0;next.disabled=index===cards.length-1;
+  index=logical(nearest());
   range.value=String(index+1);range.setAttribute('aria-valuetext',`${index+1}번 유형 ${names[index]}`);
   fill.style.transform=`scaleX(${(index+1)/cards.length})`;
  };
  listen(prev,'click',()=>{interact();go(index-1);});listen(next,'click',()=>{interact();go(index+1);});
  listen(play,'click',()=>{userPaused=!userPaused;labelPlayback();schedule();});
  listen(range,'input',()=>{interact();go(Number(range.value)-1);});
- listen(track,'scroll',()=>{if(!frame)frame=requestAnimationFrame(update);},{passive:true});
+ listen(track,'scroll',()=>{if(!frame)frame=requestAnimationFrame(update);clearTimeout(settleTimer);settleTimer=setTimeout(normalize,160);},{passive:true});
  listen(track,'keydown',e=>{if(e.target!==track)return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();interact();go(index+(e.key==='ArrowRight'?1:-1));}});
  listen(track,'wheel',e=>{
   if(e.ctrlKey)return;
@@ -38,9 +47,6 @@ export function bindTypeCarousel(){
   if(Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
   const delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?track.clientWidth:1),direction=Math.sign(delta);
   if(!direction)return;
-  const atStart=track.scrollLeft<=2,atEnd=track.scrollLeft>=track.scrollWidth-track.clientWidth-2;
-  // Outward input at either end continues scrolling the page.
-  if((direction<0&&atStart)||(direction>0&&atEnd))return;
   e.preventDefault();
   const now=performance.now();if(now<wheelLock)return;
   if(now-lastWheel>180||Math.sign(wheelSum)!==direction)wheelSum=0;
@@ -52,12 +58,13 @@ export function bindTypeCarousel(){
  listen(section,'focusin',e=>{focused=e.target!==play&&e.target.matches(':focus-visible');schedule();});
  listen(section,'focusout',e=>{focused=section.contains(e.relatedTarget)&&e.relatedTarget!==play&&e.relatedTarget.matches(':focus-visible');schedule();});
  listen(track,'pointerdown',()=>{touching=true;interact();});
- listen(document,'pointerup',()=>{if(touching){touching=false;schedule();}});
- listen(document,'pointercancel',()=>{touching=false;schedule();});
+ listen(document,'pointerup',()=>{if(touching){touching=false;clearTimeout(settleTimer);settleTimer=setTimeout(normalize,160);schedule();}});
+ listen(document,'pointercancel',()=>{touching=false;normalize();schedule();});
  listen(document,'visibilitychange',schedule);
  listen(reduced,'change',()=>{if(reduced.matches){userPaused=true;labelPlayback();}schedule();});
  const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;schedule();},{threshold:.12});observer.observe(track);
  const resize=new ResizeObserver(()=>{go(index,true);update();});resize.observe(track);
- disposeCarousel=()=>{stop();clearTimeout(interactionTimer);cancelAnimationFrame(frame);observer.disconnect();resize.disconnect();events.abort();};
- labelPlayback();update();
+ disposeCarousel=()=>{stop();clearTimeout(interactionTimer);clearTimeout(settleTimer);cancelAnimationFrame(frame);observer.disconnect();resize.disconnect();events.abort();copies.forEach(el=>el.remove());};
+ prev.disabled=false;next.disabled=false;
+ go(0,true);labelPlayback();update();
 }
