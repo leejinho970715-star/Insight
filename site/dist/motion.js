@@ -7,6 +7,18 @@ export function runMotion() {
  const {gsap,ScrollTrigger}=window;
  gsap.registerPlugin(ScrollTrigger);
  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+ // Establish pin spacing before measuring the sections that follow it.
+ const story=document.querySelector('.brand-story');
+ if(story){
+  const headerHeight=()=>document.querySelector('.header').offsetHeight;
+  const timeline=gsap.timeline({scrollTrigger:{trigger:story,start:()=>`top top+=${headerHeight()}`,end:()=>'+='+Math.round(innerHeight*2.1),pin:'.brand-stage',scrub:.65,anticipatePin:1,invalidateOnRefresh:true,refreshPriority:1}});
+  timeline.fromTo('.brand-stage-logo',{scale:.18,y:45,rotation:-28,autoAlpha:.7},{scale:1,y:0,rotation:0,autoAlpha:1,duration:.48,ease:'power2.out'},0)
+   .fromTo('.brand-halo',{scale:.2,autoAlpha:0},{scale:1,autoAlpha:1,duration:.4},.12)
+   .fromTo('.brand-story-content',{y:38,autoAlpha:0},{y:0,autoAlpha:1,duration:.22},.53)
+   .fromTo('.brand-story-content h2',{y:18,clipPath:'inset(100% 0% 0% 0%)'},{y:0,clipPath:'inset(0% 0% 0% 0%)',duration:.2},.56)
+   .fromTo('.brand-progress i',{scaleX:0},{scaleX:1,duration:1,ease:'none'},0)
+   .to('.brand-scroll-cue',{autoAlpha:.3,duration:.15},.85);
+ }
  const reveal=(el,from,duration=.8)=>gsap.from(el,{...from,autoAlpha:0,duration,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 91%',end:'bottom top',toggleActions:'play reverse play reverse'}});
  const shapes=[{y:42,rotation:1.5},{y:28,scale:.94},{x:-24,y:16},{x:24,y:16}];
  document.querySelectorAll('.reveal,.contact-method,.contact-person-row,.contact-brand-row').forEach((el,i)=>reveal(el,shapes[i%shapes.length],.8+(i%3)*.12));
@@ -24,16 +36,5 @@ export function runMotion() {
   el.addEventListener('pointerenter',()=>gsap.to(el,{scale:1.03,duration:.3,ease:'back.out(1.5)'}));
   el.addEventListener('pointerleave',()=>gsap.to(el,{scale:1,duration:.4,ease:'power2.out'}));
  });
- const story=document.querySelector('.brand-story');
- if(story){
-  const headerHeight=()=>document.querySelector('.header').offsetHeight;
-  const timeline=gsap.timeline({scrollTrigger:{trigger:story,start:()=>`top top+=${headerHeight()}`,end:()=>'+='+Math.round(innerHeight*2.1),pin:'.brand-stage',scrub:.65,anticipatePin:1,invalidateOnRefresh:true}});
-  timeline.fromTo('.brand-stage-logo',{scale:.18,y:45,rotation:-28,autoAlpha:.7},{scale:1,y:0,rotation:0,autoAlpha:1,duration:.48,ease:'power2.out'},0)
-   .fromTo('.brand-halo',{scale:.2,autoAlpha:0},{scale:1,autoAlpha:1,duration:.4},.12)
-   .fromTo('.brand-story-content',{y:38,autoAlpha:0},{y:0,autoAlpha:1,duration:.22},.53)
-   .fromTo('.brand-story-content h2',{y:18,clipPath:'inset(100% 0% 0% 0%)'},{y:0,clipPath:'inset(0% 0% 0% 0%)',duration:.2},.56)
-   .fromTo('.brand-progress i',{scaleX:0},{scaleX:1,duration:1,ease:'none'},0)
-   .to('.brand-scroll-cue',{autoAlpha:.3,duration:.15},.85);
- }
  requestAnimationFrame(()=>ScrollTrigger.refresh());
 }
