@@ -1,4 +1,4 @@
-# 애니어그램 인사이트
+# 에니어그램 인사이트
 
 오렌지 톤의 반응형 브랜드 사이트. Pretendard, GSAP + ScrollTrigger와 직접 생성한 전신 3D 클레이 동물 이미지를 사용합니다. 서버·외부 API 없이 동작하는 정적 사이트입니다.
 
@@ -27,7 +27,7 @@ PNG·PDF 다운로드는 html2canvas와 jsPDF로 생성합니다. 링크 복사,
 
 ## 임시 콘텐츠
 
-사용자가 임시 데이터로 제공한 연락처 010-4049-2697, 이메일 leejinho970715@gmail.com, 대표 이은규, 서울시 강서구 화곡본동, 협의회 전문 강사, 10회 강연, 《애니어그램으로 알아보는 내 자신》 집필을 반영했습니다. 강사 인사말·교육과 강연 설명은 초안입니다. 강연별 실제 일정·주최기관을 임의로 만들지 않았고, 책 표지는 CSS로 만든 콘셉트이며 실제 출간 정보가 아닙니다.
+사용자가 임시 데이터로 제공한 연락처 010-4049-2697, 이메일 leejinho970715@gmail.com, 대표 이은규, 서울시 강서구 화곡본동, 협의회 전문 강사, 10회 강연, 《에니어그램으로 알아보는 내 자신》 집필을 반영했습니다. 강사 인사말·교육과 강연 설명은 초안입니다. 강연별 실제 일정·주최기관을 임의로 만들지 않았고, 책 표지는 CSS로 만든 콘셉트이며 실제 출간 정보가 아닙니다.
 
 `dist/app.js`에서 사이트 소개와 연락처·강사·책 내용을 수정하고, `dist/data.js`에서 동물 유형과 문항을 수정할 수 있습니다. 각 페이지의 HTML 제목과 설명도 함께 확인해주세요.
 
@@ -43,15 +43,23 @@ ABOUT의 자기 발견·공감·함께 성장 아이콘과 교육·강연·메�
 
 ## GitHub Pages 배포
 
-브랜드 로고는 원 위의 아홉 점과 3–6–9 삼각형, 1–4–2–8–5–7 연결을 담은 3D 클레이 상징입니다. `dist/assets/logo-enneagram-3d.png`를 헤더·푸터·브랜드 스크롤 섹션·도서 콘셉트·문의·결과 리포트에 사용하고, 파비콘과 터치 아이콘에도 동일한 상징을 적용했습니다. built-in image_gen 프롬프트는 `symbol-logo-prompt.txt`에 저장했습니다. 구조 참고: https://www.enneagraminstitute.com/how-the-enneagram-system-works/
+브랜드 로고는 원 위의 아홉 점과 3–6–9 삼각형, 1–4–2–8–5–7 연결을 담은 3D 클레이 상징입니다. `dist/assets/logo-symbol-clean.png`를 헤더·푸터·브랜드 스크롤 섹션·도서 콘셉트·문의·결과 리포트에 사용하고, 파비콘과 터치 아이콘에도 동일한 상징을 적용했습니다. 첨부한 심벌을 built-in image_gen으로 배경 제거한 투명 PNG이며, 최종 편집 프롬프트는 `history-image-prompts.txt`에 저장했습니다. 구조 참고: https://www.enneagraminstitute.com/how-the-enneagram-system-works/
 
 유효한 결과 화면으로 진입하면 `dist/celebration.js`에서 약 4초간 폭죽과 컨페티를 재생합니다. 대표 유형·윙 선택 변경에는 반복하지 않으며, 페이지 전환·탭 숨김 시 정리됩니다. 움직임 줄이기 설정에서는 재생하지 않습니다. 효과 레이어는 결과 리포트 외부에 있어 PNG·PDF에 포함되지 않습니다. ABOUT 카드의 흰색 배경 장식 텍스트는 제거했습니다.
 
 https://leejinho970715-star.github.io/Insight/
 
-루트 저장소의 `main` 푸시 시 GitHub Actions에서 `node build-pages.mjs`, `node verify.mjs`를 실행하고 `site/dist`를 배포합니다. HTML 리소스와 CSS 폰트 경로는 상대 경로이며 앱 라우팅은 앱 모듈의 위치에서 기본 경로를 계산하므로 `/Insight/`와 로컬 `/`에서 모두 동작합니다. 보조 이름은 ‘애니어그램 협의회’입니다.
+루트 저장소의 `main` 푸시 시 GitHub Actions에서 `node build-pages.mjs`, `node verify.mjs`를 실행하고 `site/dist`를 배포합니다. HTML 리소스와 CSS 폰트 경로는 상대 경로이며 앱 라우팅은 앱 모듈의 위치에서 기본 경로를 계산하므로 `/Insight/`와 로컬 `/`에서 모두 동작합니다. 보조 이름은 ‘에니어그램 협의회’입니다.
 
 교육 페이지 역사 참고: https://www.enneagraminstitute.com/the-traditional-enneagram/
+
+교육 연혁은 20세기 초, 1960–1970년대 초, 1970년대, 1994년 이후의 네 장으로 구성됩니다. 충분한 화면 높이에서는 GSAP로 고정한 뒤 스크롤에 따라 이미지와 설명을 전환하며, 짧은 화면에서는 세로 연혁과 등장 모션을 제공합니다. 날짜 버튼으로 직접 이동할 수 있고 움직임 줄이기 설정에서도 모든 내용을 읽을 수 있습니다. 보완 역사 자료: https://drdaviddaniels.com/history-of-the-enneagram-we-know-it-today/ · https://www.internationalenneagram.org/about/the-iea/history-and-founders/
+
+메인 `#types` 섹션은 기존 1–9번 동물 에셋을 사용한 가로 카드 슬라이드입니다. 터치 스와이프, 좌우 방향키, 이전·다음 버튼과 번호 탐색을 지원합니다. 동물은 사이트의 설명용 상징이며 공식적으로 통일된 유형 상징으로 소개하지 않습니다.
+
+`dist/layout.css`에서 본문 16px / 130%, 세로로 쌓이는 섹션 소개, 블랙 보조 버튼을 공통 적용합니다. 브랜드 워드마크는 insight, 아래에는 에니어그램 협의회만 표시합니다. HTML 메타데이터와 공유 이미지의 철자도 에니어그램으로 통일했습니다.
+
+신규 built-in image_gen 에셋: `dist/assets/history-symbol.png`, `history-system.png`, `history-psychology.png`, `history-community.png`, `logo-symbol-clean.png`, `og-image-corrected.png`. 프롬프트 세트: `history-image-prompts.txt`.
 
 글꼴 원본: https://github.com/orioncactus/pretendard (SIL Open Font License)
 

@@ -1,12 +1,13 @@
+import {historyMotion} from './history.js';
 export function brandStory() {
- return `<section id="brand-story" class="brand-story" aria-label="인사이트 브랜드 이야기"><div class="brand-stage"><span class="eyebrow brand-stage-label">NINE PERSPECTIVES. ONE INSIGHT.</span><div class="brand-logo-wrap"><div class="brand-halo" aria-hidden="true"></div><img class="brand-stage-logo" src="/assets/logo-enneagram-3d.png" alt="아홉 점과 삼각형, 연결선으로 이루어진 3D 클레이 인사이트 로고" width="600" height="600"></div><div class="brand-story-content"><span class="association-label">애니어그램 인사이트 · 애니어그램 협의회</span><h2>서로 다른 아홉 시선,<br>하나의 새로운 인사이트.</h2><p>작은 발견이 나를 이해하는 마음으로,<br>그리고 서로를 연결하는 변화로 이어집니다.</p><a href="#about" class="button">우리의 이야기 만나기</a></div><div class="brand-scroll-cue" aria-hidden="true"><span>SCROLL TO DISCOVER</span><div class="brand-progress"><i></i></div></div></div></section>`;
+ return `<section id="brand-story" class="brand-story" aria-label="인사이트 브랜드 이야기"><div class="brand-stage"><span class="eyebrow brand-stage-label">NINE PERSPECTIVES. ONE INSIGHT.</span><div class="brand-logo-wrap"><div class="brand-halo" aria-hidden="true"></div><img class="brand-stage-logo" src="/assets/logo-symbol-clean.png" alt="아홉 점과 삼각형, 연결선으로 이루어진 3D 클레이 인사이트 로고" width="600" height="600"></div><div class="brand-story-content"><span class="association-label">에니어그램 협의회</span><h2>서로 다른 아홉 시선,<br>하나의 새로운 인사이트.</h2><p>작은 발견이 나를 이해하는 마음으로,<br>그리고 서로를 연결하는 변화로 이어집니다.</p><a href="#about" class="button">우리의 이야기 만나기</a></div><div class="brand-scroll-cue" aria-hidden="true"><span>SCROLL TO DISCOVER</span><div class="brand-progress"><i></i></div></div></div></section>`;
 }
 
 export function runMotion() {
  if (!window.gsap || !window.ScrollTrigger) return;
  const {gsap,ScrollTrigger}=window;
  gsap.registerPlugin(ScrollTrigger);
- if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+ if (matchMedia('(prefers-reduced-motion: reduce)').matches) {historyMotion(gsap,ScrollTrigger);return;}
  const report=document.querySelector('#result-card');
  if(report)gsap.from(report,{autoAlpha:0,y:34,scale:.96,duration:.95,delay:.08,ease:'power3.out'});
  // Establish pin spacing before measuring the sections that follow it.
@@ -21,11 +22,12 @@ export function runMotion() {
    .fromTo('.brand-progress i',{scaleX:0},{scaleX:1,duration:1,ease:'none'},0)
    .to('.brand-scroll-cue',{autoAlpha:.3,duration:.15},.85);
  }
+ historyMotion(gsap,ScrollTrigger);
  const reveal=(el,from,duration=.8)=>gsap.from(el,{...from,autoAlpha:0,duration,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 91%',end:'bottom top',toggleActions:'play reverse play reverse'}});
  const shapes=[{y:42,rotation:1.5},{y:28,scale:.94},{x:-24,y:16},{x:24,y:16}];
  document.querySelectorAll('.reveal,.contact-method,.contact-person-row,.contact-brand-row').forEach((el,i)=>reveal(el,shapes[i%shapes.length],.8+(i%3)*.12));
  document.querySelectorAll('main h1,main h2,main h3,main p,main .eyebrow,main .faq details').forEach((el,i)=>{
-  if(el.closest('.brand-story,.question-list,.result-card,.test-guide'))return;
+  if(el.closest('.brand-story,.history-section,.type-card,.question-list,.result-card,.test-guide'))return;
   reveal(el,i%3===0?{y:25,rotationX:-12,transformPerspective:700}:i%3===1?{y:20,clipPath:'inset(100% 0% 0% 0%)'}:{x:-16,y:10},.7);
  });
  const hero=document.querySelector('.hero-art');

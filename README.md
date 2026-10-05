@@ -1,4 +1,4 @@
-# 애니어그램 인사이트 · 애니어그램 협의회
+# 에니어그램 인사이트 · 에니어그램 협의회
 
 사이트: https://leejinho970715-star.github.io/Insight/
 
