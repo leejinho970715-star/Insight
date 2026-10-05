@@ -16,7 +16,7 @@ assert.equal(calculateResult([4,0,0,0,0,0,0,1,5]).wing,1);
 const tie=calculateResult([1,5,5,0,0,0,0,0,0],3);assert.equal(tie.type,3);assert.equal(tie.wing,2);
 assert.equal(calculateResult([1,1,5,1,0,0,0,0,0],3,4).wing,4);
 const routes=['','education/','lectures/','contact/','test/','result/'];
-for(const name of ['history-symbol.png','history-system.png','history-psychology.png','history-community.png','logo-symbol-clean.png','favicon-clean-32.png','favicon-clean-192.png','apple-touch-clean.png','og-image-corrected.png'])assert.ok(fs.statSync(`dist/assets/${name}`).size>0);
+for(const name of ['history-symbol.png','history-system.png','history-psychology.png','history-community.png','logo-symbol-clean.png','favicon-clean-32.png','favicon-clean-192.png','apple-touch-clean.png','og-image-corrected.png','book-clay.png'])assert.ok(fs.statSync(`dist/assets/${name}`).size>0);
 assert.deepEqual(animals.map(a=>a.name),['소','강아지','독수리','고양이','부엉이','사슴','원숭이','호랑이','코끼리']);
 for(const route of routes)assert.ok(fs.existsSync(`dist/${route}index.html`));
 for(const name of ['hero-animals.png','logo.svg','gsap.min.js','ScrollTrigger.min.js','html2canvas.min.js','jspdf.umd.min.js','PretendardVariable.woff2'])assert.ok(fs.statSync(`dist/assets/${name}`).size>0);

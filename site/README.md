@@ -55,11 +55,17 @@ https://leejinho970715-star.github.io/Insight/
 
 교육 연혁은 20세기 초, 1960–1970년대 초, 1970년대, 1994년 이후의 네 장으로 구성됩니다. 충분한 화면 높이에서는 GSAP로 고정한 뒤 스크롤에 따라 이미지와 설명을 전환하며, 짧은 화면에서는 세로 연혁과 등장 모션을 제공합니다. 날짜 버튼으로 직접 이동할 수 있고 움직임 줄이기 설정에서도 모든 내용을 읽을 수 있습니다. 보완 역사 자료: https://drdaviddaniels.com/history-of-the-enneagram-we-know-it-today/ · https://www.internationalenneagram.org/about/the-iea/history-and-founders/
 
-메인 `#types` 섹션은 기존 1–9번 동물 에셋을 사용한 가로 카드 슬라이드입니다. 터치 스와이프, 좌우 방향키, 이전·다음 버튼과 번호 탐색을 지원합니다. 동물은 사이트의 설명용 상징이며 공식적으로 통일된 유형 상징으로 소개하지 않습니다.
+메인 `#types` 섹션은 기존 1–9번 동물 에셋을 사용한 가로 카드 슬라이드입니다. 터치 스와이프, 좌우 방향키, 이전·다음 버튼과 드래그 가능한 게이지 바를 지원합니다. 동물은 사이트의 설명용 상징이며 공식적으로 통일된 유형 상징으로 소개하지 않습니다.
 
 `dist/layout.css`에서 본문 16px / 130%, 세로로 쌓이는 섹션 소개, 블랙 보조 버튼을 공통 적용합니다. 브랜드 워드마크는 insight, 아래에는 에니어그램 협의회만 표시합니다. HTML 메타데이터와 공유 이미지의 철자도 에니어그램으로 통일했습니다.
 
 신규 built-in image_gen 에셋: `dist/assets/history-symbol.png`, `history-system.png`, `history-psychology.png`, `history-community.png`, `logo-symbol-clean.png`, `og-image-corrected.png`. 프롬프트 세트: `history-image-prompts.txt`.
+
+유형 슬라이드는 화면에 보이는 동안 1초마다 한 카드씩 자동 이동하고 마지막 카드에서 처음으로 순환합니다. 호버·키보드 탐색·터치 조작 중에는 잠시 멈추며, 일시정지/재생 버튼을 제공합니다. 카드 영역의 세로 휠은 가로 이동으로 처리하고 양 끝의 바깥 방향 휠은 페이지 스크롤로 이어집니다. 트랙패드의 가로 입력은 그대로 사용합니다. 게이지 바는 현재 위치를 표시하고 클릭·드래그·방향키로 이동할 수 있습니다. 호버에는 오렌지 이미지 배경과 블랙 본문 배경, 밝은 글자색 전환을 적용합니다. 페이지 전환 시 타이머·이벤트·관찰자를 정리하고, 보이지 않는 탭과 화면 밖에서는 자동재생을 멈춥니다. 움직임 줄이기 설정에서는 자동재생을 기본 중지합니다.
+
+강연 소개의 책은 `dist/assets/book-clay.png`라는 투명 3D 클레이 이미지로 교체했습니다. 둥근 오렌지 표지, 두꺼운 크림 페이지, 한글 제목과 인사이트 심벌을 담은 도서 표지 콘셉트입니다. built-in image_gen 프롬프트: `book-clay-prompt.txt`.
+
+교육·강연 문의, 프로그램 상담, PDF 저장·결과 공유, 연락 정보 복사에는 블랙 버튼을 사용합니다. 검사 시작·이미지 저장·주요 메일 문의에는 오렌지를 유지하며 모서리·높이·글꼴·호버 동작은 공통 버튼 스타일을 따릅니다.
 
 글꼴 원본: https://github.com/orioncactus/pretendard (SIL Open Font License)
 
