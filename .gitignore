@@ -1,0 +1,7 @@
+site/node_modules/
+site/.openai/
+site-preview.png
+site-deploy.tar.gz
+*-preview.png
+qa-*.png
+pages-config.json
